@@ -1,0 +1,45 @@
+Create the service :
+$ sudo nano /etc/systemd/system/cadrephoto.service :
+
+```
+[Unit]
+Description=Cadrephoto
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/home/ozh/.virtualenvs/pimoroni/bin/python /home/ozh/cadrephoto/app.py
+WorkingDirectory=/home/ozh/cadrephoto
+Restart=always
+RestartSec=60
+User=ozh
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+Start the service:
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable cadrephoto.service
+$ sudo systemctl start cadrephoto.service
+
+Check the status of the service:
+$ sudo systemctl status cadrephoto.service
+
+Stop the service:
+$ sudo systemctl stop cadrephoto.service
+
+Check the complete logs:
+$ journalctl -u cadrephoto.service
+
+View the logs in real-time:
+$ journalctl -u cadrephoto.service -f
+
+Print the last 10 lines of logs:
+$ journalctl -u cadrephoto.service -n 10 --no-pager
+
+Format to 65 cols max:
+$ journalctl -u cadrephoto.service -n 30 --no-pager | fold -s -w 65

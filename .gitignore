@@ -1,0 +1,17 @@
+# Ignore this :
+.idea
+.pytest_cache
+.venv
+__pycache__
+
+
+output_dithered.jpg
+current_photo.txt
+
+utils/constants.py
+
+temp_download/*
+!temp_download/.gitkeep
+
+photos/*
+!photos/.gitkeep
