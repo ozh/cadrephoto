@@ -40,16 +40,16 @@ def button_display_logs():
 
 def button_display_next_image():
     debug_log("Button A - displaying next image", 'info')
-    start_blinking_led()
+    led_on()
     send_to_eink(get_next_photo())
-    stop_blinking_led()
+    led_off()
 
 def button_delete_current():
     debug_log("Button B - deleting current and display next", 'info')
-    start_blinking_led()
+    led_on()
     delete_current_photo()
     send_to_eink(get_next_photo())
-    stop_blinking_led()
+    led_off()
 
 # Define buttons with long press detection
 button_a = Button(5, hold_time=2)
