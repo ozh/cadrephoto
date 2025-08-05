@@ -1,50 +1,14 @@
 """
-
-Logs.
-
-Get wifi signal strength with python code:
-    import os
-    import subprocess
-    def get_wifi_signal_strength():
-        try:
-            result = subprocess.run(['iwconfig', 'wlan0'], capture_output=True, text=True)
-            for line in result.stdout.splitlines():
-                if 'Link Quality' in line:
-                    return line.strip()
-        except Exception as e:
-            return f"Error getting wifi signal: {e}"
-
+Logs !
 
 First screen :
-
-    - Wifi strength :
-    $ iwconfig wlan0 | grep Link
-              Link Quality=70/70  Signal level=-29 dBm
-    - Number of images in the output folder. Python code to get this :
-    print(len([f for f in os.listdir('./photos') if f.endswith('.jpg')]))
-
-    - test IMAP connection to server
-    - test SMTP connection to server
-
-    - $ systemctl status cadrephoto.service :
-    ● cadrephoto.service - Cadrephoto
-     Loaded: loaded (/etc/systemd/system/cadrephoto.service; enabled; preset: enabled)
-     Active: active (running) since Sat 2025-08-02 19:20:06 CEST; 14h ago
-    Main PID: 1717 (python)
-      Tasks: 11 (limit: 166)
-        CPU: 1h 2min 30.892s
-     CGroup: /system.slice/cadrephoto.service
-             └─1717 /home/ozh/.virtualenvs/pimoroni/bin/python /home/ozh/cadrephoto/app.py
-
+    - Wifi diagnostics
+    - Number of images in the output folder and current photo
+    - test IMAP and SMTP connection to server
+    - Service status of the cadrephoto service
 
 Second screen :
-
-    Print the last N lines of logs:
-    $ journalctl -u cadrephoto.service -n 24 --no-pager
-
-Kill service with Ctrl-C:
-    $ kill -SIGINT $(ps -ef | grep cadre | xargs | awk '{print $2}')
-
+    - last N lines of logs:
 
 """
 import imaplib
@@ -55,12 +19,9 @@ import subprocess
 import sys
 
 from PIL import Image, ImageDraw, ImageFont
-from PIL.Image import Image as ImageType
 
 from utils.constants import OUTPUT_FOLDER, IMAP_SERVER, SMTP_USER, SMTP_PASSWORD, SMTP_SERVER, SMTP_PORT, CURRENT_PHOTO, \
     TMP_DOWNLOAD_FOLDER
-from utils.image_manipulation import apply_floyd_steinberg_dither
-from utils.utils import debug_log
 
 # Values for Pimoroni Impressions Spectra 7.3''
 CHARS_PER_LINE = 88
@@ -264,8 +225,5 @@ def _text_to_image(lines, image_name):
             lines_consumed += 1
         line_index += 1
 
-    # debug_screen_img = apply_floyd_steinberg_dither(debug_screen_img)
     debug_screen_img.save(TMP_DOWNLOAD_FOLDER + '/' + image_name)
-    debug_log(f'Transformed logs to image at {image_name}', 'info')
     return image_name
-

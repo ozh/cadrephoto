@@ -28,12 +28,10 @@ def button_display_logs():
     import time
     from utils.logs import logs_to_image_first_screen, logs_to_image_second_screen
     led_on()
+    # Not too much debug logs here, as we don't want to flood the display with log messages saying we are displaying logs
     debug_log("Button C - logs", 'info')
-    debug_log('Displaying 1st screen', 'info')
     send_to_eink(logs_to_image_first_screen(), is_debug=True)
-    debug_log('Sleeping for 20 seconds before displaying second screen', 'info')
     time.sleep(20)
-    debug_log('Displaying 2nd screen', 'info')
     send_to_eink(logs_to_image_second_screen(), is_debug=True)
     led_off()
     debug_log('Done displaying debug screens. Press button again to refresh', 'info')
