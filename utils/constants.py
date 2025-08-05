@@ -9,7 +9,7 @@ SMTP_PORT = int(os.getenv("SMTP_PORT"))
 SMTP_USER = os.getenv("SMTP_USER")
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 OWNER_EMAIL = os.getenv("OWNER_EMAIL")
-DEBUG = bool(os.getenv("DEBUG", False))
+DEBUG = (os.getenv("DEBUG").lower() == 'true')
 MAX_BLINKS = int(os.getenv("MAX_BLINKS", 200))
 NUMBER_OF_PHOTOS_TO_KEEP = int(os.getenv("NUMBER_OF_PHOTOS_TO_KEEP", 5))
 DISPLAY_PHOTO_INTERVAL = int(os.getenv("DISPLAY_PHOTO_INTERVAL", 3600))  # in seconds
