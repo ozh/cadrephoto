@@ -47,6 +47,10 @@ def get_next_photo():
     photos_folder = pathlib.Path(OUTPUT_FOLDER)
     photos = [os.path.basename(x) for x in photos_folder.glob('*.jpg')]
 
+    if not photos:
+        debug_log("No photo found in the photo folder. Get one sent by email !", 'critical')
+        exit_program(1)
+
     if current_photo := get_current_photo():
         try:
             current_index = photos.index(current_photo)
