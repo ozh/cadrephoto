@@ -1,4 +1,3 @@
-# https://www.onlineide.pro/playground/share/0ef5c665-36ef-4e02-96f7-6b60dfee5d6f
 import sys
 import threading
 import time
@@ -26,13 +25,13 @@ def led_on():
     if sys.platform != "win32":
         gpio.set_value(led, Value.ACTIVE)
     else:
-        print("🌟", end=' ')
+        print("O", end=' ')
 
 def led_off():
     if sys.platform != "win32":
         gpio.set_value(led, Value.INACTIVE)
     else:
-        print("🟊", end=' ')
+        print(".", end=' ')
 
 def blink_led():
     global blinks_iteration

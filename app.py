@@ -46,10 +46,10 @@ def run_app():
             display_next_image()
             last_display_time = now
 
-        # Case 3 : no new mail, and it's been less than 1 hour since the last display
+        # Case 3 : no new mail, and it's been less than {min_display_duration} since the last display
         else:
             # nothing to do
-            debug_log("No new mail, and it's been less than 1 hour since the last display", 'info')
+            debug_log(f"No new mail, and it's been less than {min_display_duration} since the last display", 'info')
             pass
 
         # Wait for CHECK_INTERVAL minutes before checking again

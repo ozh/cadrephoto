@@ -1,17 +1,16 @@
-# Ignore this :
+# Ignore this : IDE project files
 .idea
 .pytest_cache
 .venv
 __pycache__
 
+# Ignore these app specific files
+/output_dithered.jpg
+/current_photo.txt
 
-output_dithered.jpg
-current_photo.txt
+/temp_download/*
+!/temp_download/.gitkeep
 
-utils/constants.py
-
-temp_download/*
-!temp_download/.gitkeep
-
-photos/*
-!photos/.gitkeep
+/photos/*
+!/photos/.gitkeep
+/.env
