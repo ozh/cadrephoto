@@ -144,7 +144,9 @@ def process_new_image(image_path, output_dithered_image):
     delete_all_but_latest_XXX(OUTPUT_FOLDER)
 
     # Genarate dithered image
-    dithered = apply_floyd_steinberg_dither(image)
+    # first, downsize the image to 400x240
+    dithered = image.resize((400, 240))
+    dithered = apply_floyd_steinberg_dither(dithered)
     dithered.save(output_dithered_image)
     debug_log(f"New dithered image : {output_dithered_image}", 'info')
 

@@ -27,7 +27,7 @@ from utils.constants import OUTPUT_FOLDER, IMAP_SERVER, SMTP_USER, SMTP_PASSWORD
 CHARS_PER_LINE = 88
 MAX_LINES = 34
 FONT_SIZE = 14
-FONT_PATH = "fonts/FiraCode.ttf"
+FONT_PATH = "assets/fonts/FiraCode.ttf"
 
 def logs_to_image_first_screen() -> str:
     """

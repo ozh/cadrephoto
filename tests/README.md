@@ -6,7 +6,10 @@ you encounter any. These files are not used by the app itself.
 To run a test, from the app root directory, run:
 
 ```bash
-python -m tests.test_file_name
-# Example:
-# python -m tests.test_led
+python -um tests.test_file_name_without_py_extension
+```
+
+Example:
+```bash
+python -um tests.test_led
 ```

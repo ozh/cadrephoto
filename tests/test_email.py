@@ -2,7 +2,8 @@ import smtplib
 import time
 import imaplib
 
-from utils.constants import SMTP_SERVER, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, IMAP_SERVER
+from utils.constants import SMTP_SERVER, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, IMAP_SERVER, OWNER_EMAIL
+from utils.email import tell_owner, tell_sender
 
 print("Test IMAP connection...")
 try:
@@ -25,5 +26,10 @@ try:
     print("SMTP connection successful.")
 except Exception as e:
     print(f"SMTP connection failed: {e}")
+
+print("Sending test email to owner...")
+tell_owner('noreply@test-email.null')
+print("Sending test email to sender...")
+tell_sender(OWNER_EMAIL, 'assets/samples/sample_dithered_image.jpg')
 
 print("End")

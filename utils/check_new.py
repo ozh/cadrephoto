@@ -27,9 +27,6 @@ def check_mail_and_download_attachments():
     unread_msg_nums = response[0].split()
 
     if not unread_msg_nums:
-        # simulate a delay when testing on Windows
-        if sys.platform == "win32":
-            time.sleep(5)
         debug_log("📭 No unread mail", 'info')
         return False
 
