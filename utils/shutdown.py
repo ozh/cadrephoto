@@ -4,6 +4,8 @@ import time
 from font_fredoka_one import FredokaOne
 from PIL import Image, ImageDraw, ImageFont
 from inky.auto import auto
+
+from utils.constants import SHUTDOWN_MESSAGE_LINE1, SHUTDOWN_MESSAGE_LINE2
 from utils.utils import debug_log, exit_program
 from utils.led import led_off, led_on
 
@@ -22,14 +24,14 @@ draw.ellipse((350, 350, 400, 400), fill=inky_display.BLACK)
 
 # Messages
 font = ImageFont.truetype(FredokaOne, 62)
-message = "Système éteint."
+message = SHUTDOWN_MESSAGE_LINE1
 _, _, w, h = font.getbbox(message)
 x = (inky_display.width / 2) - (w / 2)
 y = (inky_display.height / 2) - (h / 2) -100
 draw.text((x, y), message, inky_display.RED, font)
 
 font = ImageFont.truetype(FredokaOne, 42)
-message = "Rebrancher pour redémarrer !"
+message = SHUTDOWN_MESSAGE_LINE2
 _, _, w, h = font.getbbox(message)
 x = (inky_display.width / 2) - (w / 2)
 y = (inky_display.height / 2) - (h / 2)

@@ -22,7 +22,7 @@ def tell_owner(sender_email):
 
 def send_email_plaintext(from_email, subject, body):
     """
-    Send a message to Mamie with the sender's email.
+    Send a notification email to Grandma with the sender's email.
 
     :param from_email:
     :param subject:
@@ -45,12 +45,12 @@ def send_email_plaintext(from_email, subject, body):
 
 def tell_sender(to_email, image_path):
     """
-    Send a message to the sender with the received photo.
+    Send a message to the photo sender
 
     :param to_email: Email of the sender.
     :param image_path: Path to the image that was received.
     """
-    debug_log(f"📧 Sending email to {to_email} with received photo", 'info')
+    debug_log(f"📧 Sending email to {to_email} about the photo they sent", 'info')
     send_email_with_attachment(to_email, image_path)
 
 
@@ -79,9 +79,9 @@ def send_email_with_attachment(to_email, image_path):
     # send via SMTP
     try:
         send_email_raw(msg)
-        debug_log(f"✅ Email envoyé à {to_email}", 'info')
+        debug_log(f"✅ Mail sent to {to_email}", 'info')
     except Exception as e:
-        debug_log(f"❌ Erreur lors de l'envoi de l'email w/ attchmnt : {e}", 'critical')
+        debug_log(f"❌ Error sending email with attachment : {e}", 'critical')
 
 
 def send_email_raw(msg):

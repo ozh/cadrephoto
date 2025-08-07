@@ -21,6 +21,9 @@ NUMBER_OF_PHOTOS_TO_KEEP = int(os.getenv("NUMBER_OF_PHOTOS_TO_KEEP", 5))
 DISPLAY_PHOTO_INTERVAL = int(os.getenv("DISPLAY_PHOTO_INTERVAL", 3600))  # in seconds
 CHECK_INTERVAL = int(os.getenv("CHECK_INTERVAL", 10))  # in seconds
 
+SHUTDOWN_MESSAGE_LINE1= os.getenv("SHUTDOWN_MESSAGE_LINE1")
+SHUTDOWN_MESSAGE_LINE2= os.getenv("SHUTDOWN_MESSAGE_LINE2")
+
 # File parameters
 TMP_DOWNLOAD_FOLDER = "./temp_download"
 OUTPUT_FOLDER = "./photos"
