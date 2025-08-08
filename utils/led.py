@@ -23,19 +23,13 @@ blinks_iteration = 0           # count number of blinks in the current thread
 
 def led_on():
     if sys.platform != "win32":
-        try:
-            gpio.set_value(led, Value.ACTIVE)
-        except Exception as e:
-            debug_log(f"Could not turn LED on : {e}", "critical")
+        gpio.set_value(led, Value.ACTIVE)
     else:
         print("O", end=' ')
 
 def led_off():
     if sys.platform != "win32":
-        try:
-            gpio.set_value(led, Value.INACTIVE)
-        except Exception as e:
-            debug_log(f"Could not turn LED off : {e}", "critical")
+        gpio.set_value(led, Value.INACTIVE)
     else:
         print(".", end=' ')
 
@@ -47,11 +41,10 @@ def blink_led():
         time.sleep(0.3)
         led_off()
         time.sleep(1)
-    debug_log(f'Blinking thread stopped with {blinks_iteration}', 'info')
 
 def start_blinking_led():
     global blink_thread
-    stop_event.clear()  # S'assurer que l'événement est désactivé
+    stop_event.clear()
     blink_thread = threading.Thread(target=blink_led)
     blink_thread.start()
 
