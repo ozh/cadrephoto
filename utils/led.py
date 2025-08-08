@@ -47,6 +47,7 @@ def blink_led():
         time.sleep(0.3)
         led_off()
         time.sleep(1)
+    debug_log(f'Blinking thread stopped with {blinks_iteration}', 'info')
 
 def start_blinking_led():
     global blink_thread
@@ -55,6 +56,8 @@ def start_blinking_led():
     blink_thread.start()
 
 def stop_blinking_led():
+    global blinks_iteration
+    blinks_iteration = 0
     stop_event.set()
     if blink_thread is not None:
         blink_thread.join()
