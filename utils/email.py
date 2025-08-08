@@ -103,5 +103,8 @@ def render_email_template(template: str, context: dict) -> str:
     :param context: A dictionary containing values to replace in the template.
     :return: The rendered string with placeholders replaced by context values.
     """
-    return template.format(**context)
+    for key, value in context.items():
+        placeholder = '{' + key + '}'
+        template = template.replace(placeholder, value)
+    return template
 

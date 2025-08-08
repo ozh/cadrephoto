@@ -69,11 +69,14 @@ def delete_all_but_latest_XXX(directory):
         return False
 
     # Get list of files sorted by modification time (newest first)
-    files = [f for f in dir_path.iterdir() if f.is_file()]
+    files = [f for f in dir_path.iterdir() if f.is_file() and not f.name.startswith('.')]
     files.sort(key=lambda f: f.stat().st_mtime, reverse=True)
+    number_of_files = len(files)
 
     # Keep the NUMBER_OF_PHOTOS_TO_KEEP most recent files
     files_to_delete = files[NUMBER_OF_PHOTOS_TO_KEEP:]
+    number_of_files_to_delete = len(files_to_delete)
+    debug_log(f"Deleting {number_of_files_to_delete} files out of {number_of_files})", 'info')
 
     is_ok = True
 

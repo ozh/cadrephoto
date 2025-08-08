@@ -113,7 +113,7 @@ def convert_image_to_jpg(input_path):
         raise ValueError(f"Unsupported file format: {ext}")
 
     debug_log(f"JPG conversion: {input_path} -> {output_path}", 'info')
-
+    os.remove(input_path) # delete original file
     return output_path
 
 
@@ -140,7 +140,7 @@ def process_new_image(image_path, output_dithered_image):
     image.save(f"{OUTPUT_FOLDER}/{image_name}")
     os.remove(image_path)
 
-    # Keep only 5 most recent images
+    # Keep only XXX most recent images
     delete_all_but_latest_XXX(OUTPUT_FOLDER)
 
     # Genarate dithered image

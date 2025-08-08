@@ -18,13 +18,16 @@ def check_mail_and_download_attachments():
 
     :return: false, or from_email, attachment_path
     """
+    try:
+        mail = imaplib.IMAP4_SSL(IMAP_SERVER)
+        mail.login(SMTP_USER, SMTP_PASSWORD)
+        mail.select("INBOX")
 
-    mail = imaplib.IMAP4_SSL(IMAP_SERVER)
-    mail.login(SMTP_USER, SMTP_PASSWORD)
-    mail.select("INBOX")
-
-    status, response = mail.search(None, 'UNSEEN')
-    unread_msg_nums = response[0].split()
+        status, response = mail.search(None, 'UNSEEN')
+        unread_msg_nums = response[0].split()
+    except imaplib.IMAP4.error as e:
+        debug_log(f"❌ Could not connect to IMAP mail server : {e}", 'critical')
+        return False
 
     if not unread_msg_nums:
         debug_log("📭 No unread mail", 'info')
