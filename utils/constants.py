@@ -16,13 +16,16 @@ EMAIL_OWNER_SUBJECT= os.getenv("EMAIL_OWNER_SUBJECT")
 EMAIL_OWNER_BODY = os.getenv("EMAIL_OWNER_BODY")
 
 DEBUG = (os.getenv("DEBUG").lower() == 'true')
-MAX_BLINKS = int(os.getenv("MAX_BLINKS", 200))
 NUMBER_OF_PHOTOS_TO_KEEP = int(os.getenv("NUMBER_OF_PHOTOS_TO_KEEP", 5))
 DISPLAY_PHOTO_INTERVAL = int(os.getenv("DISPLAY_PHOTO_INTERVAL", 3600))  # in seconds
 CHECK_INTERVAL = int(os.getenv("CHECK_INTERVAL", 10))  # in seconds
 
 SHUTDOWN_MESSAGE_LINE1= os.getenv("SHUTDOWN_MESSAGE_LINE1")
 SHUTDOWN_MESSAGE_LINE2= os.getenv("SHUTDOWN_MESSAGE_LINE2")
+
+# Maximum number of led blinks (roughly 4 min) to avoid infinite loop if error
+# The idea is to stop blinking after a long time, to avoid letting the LED on forever
+MAX_BLINKS = 200
 
 # File parameters
 TMP_DOWNLOAD_FOLDER = "./temp_download"
