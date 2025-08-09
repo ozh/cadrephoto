@@ -1,6 +1,5 @@
 import imaplib
 import email
-import sys
 
 from utils.utils import *
 from utils.image_manipulation import convert_image_to_jpg
@@ -33,7 +32,7 @@ def check_mail_and_download_attachments():
         debug_log("📭 No unread mail", 'info')
         return False
 
-    debug_log("📭 New mail(s) !", 'info')
+    debug_log("📭 New mail !", 'info')
 
     attachment_path = None
     from_email = None

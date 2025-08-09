@@ -7,6 +7,7 @@ from utils.utils import debug_log, write_photo_name
 if sys.platform != "win32":
     from inky.auto import auto
 else:
+    # On windows, we will use tkinter to display the image
     from tkinter import *
     from PIL import ImageTk, Image
 
@@ -16,7 +17,7 @@ def send_to_eink(image_filename, is_debug=False):
     Use basename of the image in the OUTPUT_FOLDER
 
     :param image_filename: filename of the image to display
-    :param is_debug: if True, use DOWNLOAD_FOLDER instead of OUTPUT_FOLDER for temp image, and do not write photo name
+    :param is_debug: if True, use temp DOWNLOAD_FOLDER instead of OUTPUT_FOLDER for temp image, and do not write photo name
     :return: False if error, True if success
     """
 

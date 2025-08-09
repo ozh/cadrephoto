@@ -52,7 +52,7 @@ def get_next_photo():
         # Copy /assets/samples/sample_photo.jpg to OUTPUT_FOLDER
         sample_photo = pathlib.Path(__file__).parent.parent / 'assets' / 'samples' / 'sample_photo.jpg'
         if sample_photo.exists():
-            debug_log(f"No photos found. Copying sample photo from {sample_photo} to {OUTPUT_FOLDER}", 'info')
+            debug_log(f"No photos found. Copying sample photo from {sample_photo} to {OUTPUT_FOLDER}", 'critical')
             shutil.copy(sample_photo, OUTPUT_FOLDER)
             photos = [os.path.basename(sample_photo)]
         else:

@@ -1,29 +1,24 @@
 """
-Logs !
-
 First screen :
     - Free space on SD card / CPU temperature
     - uptime
     - IP and broadcast address
-    - Wifi diagnostics
+    - Wifi details
     - test IMAP and SMTP connection to server
     - Service status of the cadrephoto service
 
 Second screen :
-    - last N lines of logs:
+    - last N lines of logs
 
 """
 import imaplib
 import smtplib
-import time
-import os
 import subprocess
 import sys
 
 from PIL import Image, ImageDraw, ImageFont
 
-from utils.constants import OUTPUT_FOLDER, IMAP_SERVER, SMTP_USER, SMTP_PASSWORD, SMTP_SERVER, SMTP_PORT, CURRENT_PHOTO, \
-    TMP_DOWNLOAD_FOLDER
+from utils.constants import IMAP_SERVER, SMTP_USER, SMTP_PASSWORD, SMTP_SERVER, SMTP_PORT, TMP_DOWNLOAD_FOLDER
 
 # Values for Pimoroni Impressions Spectra 7.3''
 CHARS_PER_LINE = 88
@@ -76,6 +71,10 @@ def logs_to_image_first_screen() -> str:
         ["$ systemctl status cadrephoto.service", (255, 0, 0)],
     ]
     lines += get_systemctl_status()
+    lines += [
+        [ "-----", (0, 255, 0) ],
+        [ "This screen will show for 30 seconds. Read fast !", (255, 0, 0) ],
+    ]
 
     return _text_to_image(lines, 'debug_screen_img1.png')
 

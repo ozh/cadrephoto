@@ -31,7 +31,7 @@ def button_display_logs():
     # Not too much debug logs here, as we don't want to flood the display with log messages saying we are displaying logs
     debug_log("Button C - logs", 'info')
     send_to_eink(logs_to_image_first_screen(), is_debug=True)
-    time.sleep(20)
+    time.sleep(30)
     send_to_eink(logs_to_image_second_screen(), is_debug=True)
     led_off()
     debug_log('Done displaying debug screens. Press button again to refresh', 'info')

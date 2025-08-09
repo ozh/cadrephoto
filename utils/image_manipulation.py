@@ -1,10 +1,7 @@
 # Image manipulation
 import math
 import os
-import sys
-
-if sys.platform != "win32":
-    import pyheif
+from pillow_heif import HeifImagePlugin
 
 from PIL import Image, ImageOps
 from utils.utils import debug_log, delete_all_but_latest_XXX, rename_file_with_timestamp
@@ -12,12 +9,23 @@ from utils.constants import PALETTE, OUTPUT_FOLDER
 
 
 def fix_image_orientation(path):
+    """
+    Fix the orientation of an image based on its EXIF data.
+    :param path:  Path to the image file.
+    :return:  image object (PIL.Image)
+    """
     pil = Image.open(path)
     pil = ImageOps.exif_transpose(pil)
     return pil
 
 
-def resize_and_crop_image(image):
+def resize_and_crop_image(image: Image) -> Image:
+    """
+    Resize the image to a width of 800 pixels
+
+    :param image: an image object (PIL.Image)
+    :return:  a resized and cropped image object
+    """
     new_width = 800
     ratio = new_width / image.width
     new_height = int(image.height * ratio)
@@ -31,7 +39,7 @@ def resize_and_crop_image(image):
 
 
 def perceptual_distance(c1, c2):
-    # Pondération perceptuelle RGB (ex: luminosité humaine)
+    # Perceptual RGB weighting (e.g., human brightness perception)
     return math.sqrt(
         0.3 * (c1[0] - c2[0]) ** 2 +
         0.59 * (c1[1] - c2[1]) ** 2 +
@@ -44,7 +52,7 @@ def closest_palette_color(r, g, b):
 
 
 def apply_floyd_steinberg_dither(image):
-    """Applique un dithering Floyd–Steinberg personnalisé avec la palette Spectra6."""
+    """Applies a custom Floyd–Steinberg dithering with the simulated Spectra6 palette."""
     image = image.convert("RGB")
     pixels = image.load()
     width, height = image.size
@@ -73,47 +81,36 @@ def apply_floyd_steinberg_dither(image):
             distribute(0, 1, 5 / 16)
             distribute(1, 1, 1 / 16)
 
-    debug_log("Dithering Floyd–Steinberg appliqué.", 'info')
+    debug_log("Dithering with Floyd–Steinberg", 'info')
     return image
 
 
-def convert_image_to_jpg(input_path):
+def convert_image_to_jpg(input_path='', preserve_original=False):
     """
     Convert an image to JPG format if it is not already in that format.
 
-    :param input_path: Path to the image file.
+    :param input_path: Path to the image file
+    :param preserve_original: If True, the original file will not be deleted after conversion.
     :return: Path to the converted JPG file.
     """
-    # Vérifie que le fichier existe
     if not os.path.isfile(input_path):
         raise FileNotFoundError(f"File not found: {input_path}")
 
-    # Récupère l'extension en minuscule
+    # lower case ext
     ext = os.path.splitext(input_path)[1].lower()
     output_path = os.path.splitext(input_path)[0] + ".jpg"
 
-    if ext in ['.png', '.jpg', '.jpeg']:
+    if ext in ['.png', '.jpg', '.jpeg', '.heic', '.heif', '.webp', ]:
         with Image.open(input_path) as img:
             rgb_img = img.convert("RGB")
             rgb_img.save(output_path, format="JPEG")
-    elif ext in ['.heic', '.heif']:
-        # Pour HEIC/HEIF
-        heif_file = pyheif.read(input_path)
-        image = Image.frombytes(
-            heif_file.mode,
-            heif_file.size,
-            heif_file.data,
-            "raw",
-            heif_file.mode,
-            heif_file.stride,
-        )
-        rgb_img = image.convert("RGB")
-        rgb_img.save(output_path, format="JPEG")
     else:
         raise ValueError(f"Unsupported file format: {ext}")
 
     debug_log(f"JPG conversion: {input_path} -> {output_path}", 'info')
-    os.remove(input_path) # delete original file
+    # delete original file unless stated otherwise
+    if not preserve_original:
+        os.remove(input_path)
     return output_path
 
 

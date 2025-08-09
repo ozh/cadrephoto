@@ -13,3 +13,5 @@ Example:
 ```bash
 python -um tests.test_led
 ```
+
+Note that the tests won't run if the main app.py is running.
