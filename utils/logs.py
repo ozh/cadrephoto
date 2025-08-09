@@ -2,8 +2,10 @@
 Logs !
 
 First screen :
+    - Free space on SD card / CPU temperature
+    - uptime
+    - IP and broadcast address
     - Wifi diagnostics
-    - Number of images in the output folder and current photo
     - test IMAP and SMTP connection to server
     - Service status of the cadrephoto service
 
@@ -37,10 +39,6 @@ def logs_to_image_first_screen() -> str:
     :return: string: image file name
     """
 
-    # Photo count and list
-    number_of_photos = len(os.listdir(OUTPUT_FOLDER))
-    photo_list = os.listdir(OUTPUT_FOLDER)
-
     # IMAP connection test
     try:
         mail = imaplib.IMAP4_SSL(IMAP_SERVER)
@@ -48,7 +46,7 @@ def logs_to_image_first_screen() -> str:
         mail.select("INBOX")
         mail.close()
         mail.logout()
-        imap = "IMAP OK."
+        imap = "IMAP OK"
     except Exception as e:
         imap = f"IMAP failed: {e}"
 
@@ -57,42 +55,53 @@ def logs_to_image_first_screen() -> str:
         with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as smtp:
             smtp.login(SMTP_USER, SMTP_PASSWORD)
             smtp.quit()
-        smtp = "SMTP OK."
+        smtp = "SMTP OK"
     except Exception as e:
         smtp = f"SMTP failed: {e}"
 
-    # Content of current_photo.txt
-    try:
-        with open(CURRENT_PHOTO, 'r') as f:
-            image_path = f.read().strip()
-        cur_photo = f"Content of {CURRENT_PHOTO} : {image_path}"
-    except FileNotFoundError as e:
-        cur_photo = f"Error with {CURRENT_PHOTO} : {e}"
-
-
     lines = [
+        [ "General status of the system :", (255, 0, 0) ],
+    ]
+    lines += get_general_info()
+    lines += [
+        [ "-----", (0, 255, 0) ],
         [ f"$ iwconfig wlan0", (255, 0, 0) ],
     ]
     lines += get_wifi_signal()
     lines += [
         [ "-----", (0, 255, 0) ],
-        [ f"{number_of_photos} files in {OUTPUT_FOLDER}", (255, 0, 0) ],
-        [ f"{photo_list}" ],
-        [ "Current photo :", (255, 0, 0) ],
-        [ cur_photo ],
-        [ "-----", (0, 255, 0) ],
         [ "IMAP and SMTP server tests :", (255, 0, 0) ],
-        [ imap ],
-        [ smtp ],
+        [ f"{imap} / {smtp}", (0, 0, 0) ],
         [ "-----", (0, 255, 0) ],
         ["$ systemctl status cadrephoto.service", (255, 0, 0)],
     ]
-    lines += get_system_status()
+    lines += get_systemctl_status()
 
     return _text_to_image(lines, 'debug_screen_img1.png')
 
 
-def get_system_status():
+def get_general_info():
+    """
+    Get general information about the system, including IP address, uptime, temperature,
+    and free space on the SD card.
+
+    :return: list of lines with general information
+    """
+    if sys.platform == "win32":
+        # Dummy output
+        general_info = [
+            [ "SD Card use: 11% -- CPU temp=41.9'C", (0, 0, 0) ],
+            [ " 12:00:06 up 6 days, 17:02,  3 users,  load average: 0.05, 0.03, 0.00", (0, 0, 0) ],
+            [ "IP:  192.168.1.193/24  Broadcast:  192.168.1.255", (0, 0, 0) ],
+        ]
+    else:
+        general_info = get_command_output("FREEMEM=$(df -h -T | awk '/ext4 / {print $6}') && echo -n \"SD Card use: $FREEMEM -- CPU \" && vcgencmd measure_temp", (0, 0, 0))
+        general_info += get_command_output("uptime", (0, 0, 0))
+        general_info += get_command_output("ip addr show wlan0 | awk '/inet / {print \"IP: \",$2,\" Broadcast: \",$4}'", (0, 0, 0))
+
+    return general_info
+
+def get_systemctl_status():
     # Systemd service status -- just the header, since the journal will be on the second screen
     if sys.platform == "win32":
         # Dummy output
@@ -102,7 +111,13 @@ def get_system_status():
             [ "     Active: inactive (dead)", (0,0,0)  ],
         ]
     else:
-        service_status = get_command_output("systemctl status cadrephoto.service | awk 'NF==0 {exit} {print}'", (0,0,0) )
+        service_status_full = get_command_output("systemctl status cadrephoto.service", (0,0,0) )
+        # keep lines till the first empty line
+        service_status = []
+        for line in service_status_full:
+            if line and (line[0].strip() == ""):
+                break
+            service_status.append(line)
     return service_status
 
 
@@ -131,9 +146,9 @@ def logs_to_image_second_screen() :
     :return: string: image file name
     """
 
-    # get the last 24 lines of logs from systemd journal
+    # get the last XX lines of logs from systemd journal
     if sys.platform == "win32":
-        command = "dir" # meh
+        command = "dir" # meh just get some output
     else:
         command = f"journalctl -u cadrephoto.service -n {MAX_LINES} --no-pager  | fold -s -w {CHARS_PER_LINE} | tail -n {MAX_LINES}"
 
@@ -150,9 +165,10 @@ def logs_to_image_second_screen() :
 
 def get_command_output(command, line_color=None):
     """
+    Execute a shell command and return its output as a list of lines.
 
-    :param line_color:
-    :param command:
+    :param command: str: shell command to execute
+    :param line_color: tuple: RGB color for the lines, if None, default colors will be used
     :return:
     """
     lines = []

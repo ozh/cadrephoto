@@ -1,3 +1,4 @@
+import shutil
 from utils.constants import CURRENT_PHOTO, OUTPUT_FOLDER
 from utils.eink import send_to_eink
 from utils.utils import *
@@ -48,8 +49,15 @@ def get_next_photo():
     photos = [os.path.basename(x) for x in photos_folder.glob('*.jpg')]
 
     if not photos:
-        debug_log("No photo found in the photo folder. Get one sent by email !", 'critical')
-        exit_program(1)
+        # Copy /assets/samples/sample_photo.jpg to OUTPUT_FOLDER
+        sample_photo = pathlib.Path(__file__).parent.parent / 'assets' / 'samples' / 'sample_photo.jpg'
+        if sample_photo.exists():
+            debug_log(f"No photos found. Copying sample photo from {sample_photo} to {OUTPUT_FOLDER}", 'info')
+            shutil.copy(sample_photo, OUTPUT_FOLDER)
+            photos = [os.path.basename(sample_photo)]
+        else:
+            debug_log("No photo found in the photo folder. Get one sent by email !", 'critical')
+            exit_program(1)
 
     if current_photo := get_current_photo():
         try:
