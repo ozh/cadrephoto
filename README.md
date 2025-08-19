@@ -2,9 +2,12 @@
 > An email-to-photo-frame for your Grandma, powered by Raspberry Pi and eink display 
 
 **Cadrephoto** (_french for "photo frame"_) is a project that allows you to send photos
-on a digital photo frame via email, perfect for users of all ages and who may not be tech-savvy.
+on a digital photo frame **via email** : no app needed, no knowledge, perfect for users
+of all ages and who may not be tech-savvy.
 
-We all love eink displays because they are easy on the eyes, consume little to no power, and look great.
+<img width="832" height="587" alt="image" src="https://github.com/user-attachments/assets/0f1fc9ee-92b4-4ab1-8625-cecb63c3c0e0" />
+
+
 
 # 💡 Key concepts and features
 
@@ -13,6 +16,7 @@ The principle is the following:
 - A Raspberry Pi running a Python script displays a photo on an eink screen
 - It checks at regular intervals for new emails on a given email account
 - When a new email with a photo arrives, the photo is displayed on the screen
+- Email sender and photo frame owner received an email notification
 - Only the most recent photos are kept, making things ephemeral and an incentive to send newer pics more often ;)
 - Everything is fully configurable via a simple configuration file
 
@@ -28,6 +32,7 @@ The buttons on the frame are used to perform various actions:
 - A [Pimoroni Inky Impressions](https://shop.pimoroni.com/products/inky-impression-7-3) eink display (I used the 7.3")
 - Any Raspberry Pi (built on a Raspberry Pi Zero 2 so any model should work)
 - Obviously all the required stuff to run a Raspberry Pi (power supply, SD card, etc.)
+- A case (I slightly hacked an Ikea 13 cm x 18 cm frame to house the screen ; there are also lots of 3D print templates available)
 
 # 🗃️ Installation
 
@@ -47,19 +52,19 @@ will delete all emails after processing them.
 <br/>(as always, all packages must be installed in the virtual environment -- I sticked to the
 one created by the Pimoroni Inky setup script)
 
-3. Clone this repository, copy the [`.env.example`](https://github.com/ozh/cadrephoto/blob/master/.env-example) file to `.env`, and edit everything
+3. Clone this repository, copy the [`.env-example`](https://github.com/ozh/cadrephoto/blob/master/.env-example) file to `.env`, and edit everything
 to match your setup.
 
 
 4. Test the script by running it : `python -u main.py` (in the appropriate virtual environment)<br/>
-If everything is set up correctly, you can setup the service.<br/>
+If everything is set up correctly, you can setup the service, see below.<br/>
 If not, I included a few [tests](https://github.com/ozh/cadrephoto/blob/master/tests/) to help you troubleshoot things.
 
 
 # 🧩 Setup the service
 
 Once everything is working, you can setup the service, so the script runs automatically
-at Raspberry boot and restarts if it crashes.
+at Raspberry boot, and restarts if it crashes.
 
 1. Create a systemd service file 
 
@@ -111,7 +116,7 @@ SD card, which is not good for its longevity.
 
 # 📷 Pics and screenshots
 
-[ to be added ]
+
 
 # 📝 Inspiration and License
 
