@@ -5,7 +5,7 @@
 on a digital photo frame **via email** : no app needed, no knowledge, perfect for users
 of all ages and who may not be tech-savvy.
 
-<img width="832" height="587" alt="image" src="https://github.com/user-attachments/assets/0f1fc9ee-92b4-4ab1-8625-cecb63c3c0e0" />
+<img width="1280" height="640" alt="image" src="https://github.com/user-attachments/assets/a1295404-95e5-44e1-a95a-6fe6610597b7" />
 
 ## 📑 Table of Contents
 - [💡 Features](#-features)
@@ -19,7 +19,7 @@ of all ages and who may not be tech-savvy.
 
 The principle is the following:
 
-- A Raspberry Pi running a Python script displays a photo on an eink screen
+- Raspberry Pi runs a Python script displaying photos on an eink screen
 - It checks at regular intervals for new emails on a given email account
 - When a new email with a photo arrives, the photo is displayed on the screen
 - Email sender and photo frame owner receive an email notification
