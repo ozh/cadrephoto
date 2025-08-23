@@ -1,4 +1,4 @@
-# 🔌🖼️ Cadrephoto
+# ✉➜🖼️  Cadrephoto
 > An email-to-photo-frame for your Grandma, powered by Raspberry Pi and eink display<br/>
 
 **Cadrephoto** (_french for "photo frame"_) is a project that allows you to send photos
@@ -9,8 +9,8 @@ of all ages and who may not be tech-savvy.
 
 ## 📑 Table of Contents
 - [💡 Features](#-features)
-- [🖥️ Hardware](#-hardware)
-- [⚙️ Installation](#-installation)
+- [🖥️ Hardware](#%EF%B8%8F-hardware)
+- [⚙️ Installation](#%EF%B8%8F-installation)
 - [🧩 Setup the service](#-setup-the-service)
 - [📸 Pictures](#-pictures)
 - [📝 Inspiration & License](#-inspiration-and-license)
@@ -23,7 +23,7 @@ The principle is the following:
 - It checks at regular intervals for new emails on a given email account
 - When a new email with a photo arrives, the photo is displayed on the screen
 - Email sender and photo frame owner receive an email notification
-- Only the most recent photos are kept, making things ephemeral and an incentive to send newer pics more often ;)
+- Only the most recent photos are kept, making things ephemeral and an incentive to send newer pics ;)
 - Everything is fully configurable via a simple configuration file
 
 The buttons on the frame are used to perform various actions:
