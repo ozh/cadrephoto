@@ -34,14 +34,3 @@ MAX_BLINKS = 200
 TMP_DOWNLOAD_FOLDER = "./temp_download"
 OUTPUT_FOLDER = "./photos"
 CURRENT_PHOTO = "./current_photo.txt"
-DITHERED_IMAGE_PATH = "./output_dithered.jpg"
-
-# Simulated palette Spectra6 for the email confirmation
-PALETTE = [
-    (230, 45, 45),  # Soft red (less saturated, vermillion)
-    (60, 180, 100),  # Pastel green
-    (50, 100, 190),  # Soft blue (light purple)
-    (255, 220, 60),  # Pale yellow
-    (20, 20, 20),  # Black (not pure, highlights)
-    (245, 245, 245)  # Off-white
-]

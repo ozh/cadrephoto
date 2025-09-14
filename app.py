@@ -1,7 +1,7 @@
 import sys
 from datetime import timedelta, datetime
 from utils.check_new import check_mail_and_download_attachments
-from utils.constants import DITHERED_IMAGE_PATH, CHECK_INTERVAL, DISPLAY_PHOTO_INTERVAL
+from utils.constants import CHECK_INTERVAL, DISPLAY_PHOTO_INTERVAL
 from utils.display_next import display_next_image
 from utils.eink import send_to_eink
 from utils.email import tell_sender, tell_owner
@@ -31,11 +31,11 @@ def run_app():
             debug_log(f"Sender : {sender_email}", 'info')
             debug_log(f"Attachment : {attachment_path}", 'info')
 
-            image_name, dithered_image_path = process_new_image(attachment_path, DITHERED_IMAGE_PATH)
+            image_name = process_new_image(attachment_path)
 
             # Display new image on Pimoroni, tell sender and tell recipient
             send_to_eink(image_name)
-            tell_sender(sender_email, dithered_image_path)
+            tell_sender(sender_email)
             tell_owner(sender_email)
 
             last_display_time = now
