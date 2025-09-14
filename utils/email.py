@@ -10,40 +10,54 @@ from utils.constants import SMTP_SERVER, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, OW
 from utils.utils import debug_log
 
 
-def tell_owner(sender_email):
+def send_email_plaintext(to_email='', subject='', body=''):
     """
-    Send a message to the owner (Mamie) with the sender's email.
+    Send an email in plain text.
 
-    :param sender_email: Email of the sender.
+    :param to_email: string
+    :param from_email: string
+    :param subject: string
+    :param body: string
     """
-    debug_log(f"📧 Sending email to {OWNER_EMAIL} about new photo from {sender_email}", 'info')
-    send_email_plaintext(sender_email, EMAIL_OWNER_SUBJECT, EMAIL_OWNER_BODY)
-
-
-def send_email_plaintext(from_email, subject, body):
-    """
-    Send a notification email to Grandma with the sender's email.
-
-    :param from_email:
-    :param subject:
-    :param body:
-    """
-    body = render_email_template(body, {'sender_email': from_email})
-    subject = render_email_template(subject, {'sender_email': from_email})
     msg = EmailMessage()
     msg.set_content(body)
     msg['Subject'] = subject
-    msg['From'] = SMTP_USER
-    msg['To'] = OWNER_EMAIL
+    msg['From'] = format_email_address(SMTP_USER)
+    msg['To'] = format_email_address(to_email)
 
     try:
         send_email_raw(msg)
-        debug_log(f"📧 Mail sent to {OWNER_EMAIL} : new photo from {from_email}", 'info')
+        debug_log(f"📧 Mail sent to {to_email}", 'info')
     except Exception as e:
-        debug_log(f"Erreur lors de l'envoi du mail plaintext : {e}", 'critical')
+        debug_log(f"Error sending plain text email : {e}", 'critical')
 
 
-def tell_sender(to_email, image_path):
+def format_email_address(email):
+    """
+    format an email address to be used in email headers so that joe@domain becomes Joe <joe@domain>
+
+    :param email:
+    :return: string
+    """
+    name_part = email.split('@')[0]
+    name_part = name_part.replace('.', ' ').replace('_', ' ').title()
+    return f"{name_part} <{email}>"
+
+
+def tell_owner(sender_email, owner_email=OWNER_EMAIL):
+    """
+    Send a message to the owner (Grandma) with the sender's email.
+
+    :param sender_email: Email of the sender.
+    :param owner_email: Owner email (default: OWNER_EMAIL)
+    """
+    debug_log(f"📧 Sending email to {owner_email} about new photo from {sender_email}", 'info')
+    body = render_email_template(EMAIL_OWNER_BODY, {'sender_email': sender_email})
+    subject = render_email_template(EMAIL_OWNER_SUBJECT, {'sender_email': sender_email})
+    send_email_plaintext(to_email=owner_email, subject=subject, body=body)
+
+
+def tell_sender(to_email, image_path=''):
     """
     Send a message to the photo sender
 
@@ -51,15 +65,15 @@ def tell_sender(to_email, image_path):
     :param image_path: Path to the image that was received.
     """
     debug_log(f"📧 Sending email to {to_email} about the photo they sent", 'info')
-    send_email_with_attachment(to_email, image_path)
+    send_email_plaintext(to_email=to_email, subject=EMAIL_CONFIRMATION_SUBJECT, body=EMAIL_CONFIRMATION_BODY)
 
 
 def send_email_with_attachment(to_email, image_path):
     # Create message
     msg = MIMEMultipart('related')
     msg['Subject'] = EMAIL_CONFIRMATION_SUBJECT
-    msg['From'] = SMTP_USER
-    msg['To'] = to_email
+    msg['From'] = format_email_address(SMTP_USER)
+    msg['To'] = format_email_address(to_email)
     html = EMAIL_CONFIRMATION_BODY
 
     msg_alternative = MIMEMultipart('alternative')
@@ -79,7 +93,7 @@ def send_email_with_attachment(to_email, image_path):
     # send via SMTP
     try:
         send_email_raw(msg)
-        debug_log(f"✅ Mail sent to {to_email}", 'info')
+        debug_log(f"📧 Mail sent to {to_email}", 'info')
     except Exception as e:
         debug_log(f"❌ Error sending email with attachment : {e}", 'critical')
 

@@ -18,7 +18,8 @@ import sys
 
 from PIL import Image, ImageDraw, ImageFont
 
-from utils.constants import IMAP_SERVER, SMTP_USER, SMTP_PASSWORD, SMTP_SERVER, SMTP_PORT, TMP_DOWNLOAD_FOLDER
+from utils.constants import IMAP_SERVER, SMTP_USER, SMTP_PASSWORD, SMTP_SERVER, SMTP_PORT, TMP_DOWNLOAD_FOLDER, \
+    IMAP_PORT, IMAP_USER, IMAP_PASSWORD
 
 # Values for Pimoroni Impressions Spectra 7.3''
 CHARS_PER_LINE = 88
@@ -34,25 +35,8 @@ def logs_to_image_first_screen() -> str:
     :return: string: image file name
     """
 
-    # IMAP connection test
-    try:
-        mail = imaplib.IMAP4_SSL(IMAP_SERVER)
-        mail.login(SMTP_USER, SMTP_PASSWORD)
-        mail.select("INBOX")
-        mail.close()
-        mail.logout()
-        imap = "IMAP OK"
-    except Exception as e:
-        imap = f"IMAP failed: {e}"
-
-    # SMTP connection test
-    try:
-        with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as smtp:
-            smtp.login(SMTP_USER, SMTP_PASSWORD)
-            smtp.quit()
-        smtp = "SMTP OK"
-    except Exception as e:
-        smtp = f"SMTP failed: {e}"
+    imap = connection_test_imap()
+    smtp = connection_test_smtp()
 
     lines = [
         [ "General status of the system :", (255, 0, 0) ],
@@ -65,7 +49,7 @@ def logs_to_image_first_screen() -> str:
     lines += get_wifi_signal()
     lines += [
         [ "-----", (0, 255, 0) ],
-        [ "IMAP and SMTP server tests :", (255, 0, 0) ],
+        [ "IMAP and SMTP connection tests :", (255, 0, 0) ],
         [ f"{imap} / {smtp}", (0, 0, 0) ],
         [ "-----", (0, 255, 0) ],
         ["$ systemctl status cadrephoto.service", (255, 0, 0)],
@@ -77,6 +61,32 @@ def logs_to_image_first_screen() -> str:
     ]
 
     return _text_to_image(lines, 'debug_screen_img1.png')
+
+
+def connection_test_smtp() -> str:
+    # SMTP connection test
+    try:
+        with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as smtp:
+            smtp.login(SMTP_USER, SMTP_PASSWORD)
+            smtp.quit()
+        smtp = "SMTP OK"
+    except Exception as e:
+        smtp = f"SMTP failed: {e}"
+    return smtp
+
+
+def connection_test_imap() -> str:
+    # IMAP connection test
+    try:
+        mail = imaplib.IMAP4_SSL(IMAP_SERVER, IMAP_PORT)
+        mail.login(IMAP_USER, IMAP_PASSWORD)
+        mail.select("INBOX")
+        mail.close()
+        mail.logout()
+        imap = "IMAP OK"
+    except Exception as e:
+        imap = f"IMAP failed: {e}"
+    return imap
 
 
 def get_general_info():

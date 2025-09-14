@@ -4,7 +4,7 @@ import email
 from utils.utils import *
 from utils.image_manipulation import convert_image_to_jpg
 
-from utils.constants import IMAP_SERVER, SMTP_USER, SMTP_PASSWORD, TMP_DOWNLOAD_FOLDER
+from utils.constants import IMAP_SERVER, IMAP_USER, IMAP_PASSWORD, IMAP_PORT, TMP_DOWNLOAD_FOLDER
 
 from utils.utils import debug_log
 
@@ -18,8 +18,8 @@ def check_mail_and_download_attachments():
     :return: false, or from_email, attachment_path
     """
     try:
-        mail = imaplib.IMAP4_SSL(IMAP_SERVER)
-        mail.login(SMTP_USER, SMTP_PASSWORD)
+        mail = imaplib.IMAP4_SSL(IMAP_SERVER, IMAP_PORT)
+        mail.login(IMAP_USER, IMAP_PASSWORD)
         mail.select("INBOX")
 
         status, response = mail.search(None, 'UNSEEN')
