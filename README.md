@@ -15,7 +15,7 @@ of all ages and who may not be tech-savvy.
 - [📸 Pictures](#-pictures)
 - [📝 Inspiration & License](#-inspiration-and-license)
  
-# 💡 Features
+# 💡 Features <a href="#-table-of-contents">ꜛ</a>
 
 The principle is the following:
 
@@ -33,14 +33,14 @@ The buttons on the frame are used to perform various actions:
 - ⏺ **Button 3 (long press)** → debug screens with useful info (for curious Grandpa)
 - ⏺ **Button 4 (long press)** → clean shutdown of the Raspberry Pi (when Grandma relocates the frame)
 
-# 🖥️ Hardware
+# 🖥️ Hardware <a href="#-table-of-contents">ꜛ</a>
 
 - A [Pimoroni Inky Impressions](https://shop.pimoroni.com/products/inky-impression-7-3) eink display (I used the 7.3")
 - Any Raspberry Pi (built on a Raspberry Pi Zero 2 so any model should work)
 - Obviously all the required stuff to run a Raspberry Pi (power supply, SD card, etc.)
 - A case (I slightly hacked an Ikea 13 cm x 18 cm frame to house the screen ; there are also lots of 3D print templates available)
 
-# ⚙️ Installation
+# ⚙️ Installation <a href="#-table-of-contents">ꜛ</a>
 
 1. You'll want to create a **dedicated email account**, on a server that supports IMAP
 and SMTP (most email providers should work) to receive the photos, since the script
@@ -67,7 +67,7 @@ If everything is set up correctly, you can setup the service, see below.<br/>
 If not, I included a few [tests](https://github.com/ozh/cadrephoto/blob/master/tests/) to help you troubleshoot things.
 
 
-# 🧩 Setup the service
+# 🧩 Setup the service <a href="#-table-of-contents">ꜛ</a>
 
 Once everything is working, you can setup the service, so the script runs automatically
 at Raspberry boot, and restarts if it crashes.
@@ -120,7 +120,7 @@ $ journalctl -u cadrephoto.service -f
 5. I think it's a good idea to install [`log2ram`](https://github.com/azlux/log2ram) to avoid writing constantly on the
 SD card, which is not good for its longevity.
 
-# 📷 Pictures
+# 📷 Pictures <a href="#-table-of-contents">ꜛ</a>
 
 <details>
   <summary>Photo frame full shot</summary>
@@ -148,9 +148,7 @@ SD card, which is not good for its longevity.
 </details>
 
 
-
-
-# 📝 Inspiration and License
+# 📝 Inspiration and License <a href="#-table-of-contents">ꜛ</a>
 
 This was my first Raspberry Pi project and first Python project 🎉.
 
